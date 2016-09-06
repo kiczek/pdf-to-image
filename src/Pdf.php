@@ -157,16 +157,19 @@ class Pdf
      * Return raw image data.
      *
      * @param string $pathToImage
+     * @param bool $transparent
      *
      * @return \Imagick
      */
-    public function getImageData($pathToImage)
+    public function getImageData($pathToImage, $transparent = false)
     {
         $imagick = new \Imagick();
 
         $imagick->setResolution($this->resolution, $this->resolution);
 
         $imagick->readImage(sprintf('%s[%s]', $this->pdfFile, $this->page - 1));
+
+        if($transparent) $imagick->setBackgroundColor(new \ImagickPixel('transparent'));
 
         $imagick->setFormat($this->determineOutputFormat($pathToImage));
 
